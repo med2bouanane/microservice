@@ -1,7 +1,7 @@
-version: '4'
+version: '3'
 services:
   mongo:
-    image: mongo:7.0.5
+    image: mongo:latest
     container_name: mongo
     ports:
       - "27017:27017"
@@ -11,3 +11,13 @@ services:
       MONGO_INITDB_DATABASE: product-service
     volumes:
       - ./docker/mongodb/data:/data/db
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./docker/pg_data:/var/lib/postgresql/data

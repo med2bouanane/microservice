@@ -21,54 +21,75 @@
 	<developers>
 		<developer/>
 	</developers>
-	<modules>
-		<module>product-service</module>
-	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
 		<url/>
 	</scm>
+
+	<modules>
+		<module>product-service</module>
+		<module>order-service</module>
+	</modules>
+
 	<properties>
 		<java.version>21</java.version>
+		<rest-assured.version>5.5.0</rest-assured.version>
+		<tc.mongodb.version>1.20.1</tc.mongodb.version>
+		<tc.junit-jupiter.version>1.20.1</tc.junit-jupiter.version>
+		<flyway.version>10.18.0</flyway.version>
+		<flyway-database-postgresql.version>10.18.0</flyway-database-postgresql.version>
+		<postgresql.version>42.7.4</postgresql.version>
+		<tc.postgresql.version>1.20.1</tc.postgresql.version>
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-testcontainers</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mongodb</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.rest-assured</groupId>
+				<artifactId>rest-assured</artifactId>
+				<version>${rest-assured.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>mongodb</artifactId>
+				<version>${tc.mongodb.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${tc.junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${tc.postgresql.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-core</artifactId>
+				<version>${flyway.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-database-postgresql</artifactId>
+				<version>${flyway-database-postgresql.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+
 
 	<build>
 		<plugins>
@@ -86,5 +107,49 @@
 			</plugin>
 		</plugins>
 	</build>
+
+<!--	<profiles>-->
+<!--		<profile>-->
+<!--			<id>default</id>-->
+<!--			<build>-->
+<!--				<plugins>-->
+<!--					<plugin>-->
+<!--						<groupId>org.springframework.boot</groupId>-->
+<!--						<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--						<configuration>-->
+<!--							<mainClass>com.demwob.training.microservices.product.ProductServiceApplication</mainClass>-->
+<!--							<excludes>-->
+<!--								<exclude>-->
+<!--									<groupId>org.projectlombok</groupId>-->
+<!--									<artifactId>lombok</artifactId>-->
+<!--								</exclude>-->
+<!--							</excludes>-->
+<!--						</configuration>-->
+<!--					</plugin>-->
+<!--				</plugins>-->
+<!--			</build>-->
+<!--		</profile>-->
+<!--		<profile>-->
+<!--			<id>tc</id>-->
+<!--			<build>-->
+<!--				<plugins>-->
+<!--					<plugin>-->
+<!--						<groupId>org.springframework.boot</groupId>-->
+<!--						<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--						<configuration>-->
+<!--							<mainClass>com.demwob.training.microservices.TestProductServiceApplication</mainClass>-->
+<!--							<excludes>-->
+<!--								<exclude>-->
+<!--									<groupId>org.projectlombok</groupId>-->
+<!--									<artifactId>lombok</artifactId>-->
+<!--								</exclude>-->
+<!--							</excludes>-->
+<!--						</configuration>-->
+<!--					</plugin>-->
+<!--				</plugins>-->
+<!--			</build>-->
+<!--		</profile>-->
+<!--	</profiles>-->
+
 
 </project>
