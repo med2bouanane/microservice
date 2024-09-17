@@ -1,7 +1,6 @@
-package com.demwob.training.order.controllers;
+package com.demwob.training.inventory_service.controller;
 
 import io.restassured.RestAssured;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,10 +8,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class OrderControllerTest {
+class InventoryControllerTest {
 
     @ServiceConnection
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
@@ -31,28 +31,25 @@ class OrderControllerTest {
     }
 
     @Test
-    void shouldSubmitOrder() {
-        String submitOrderJson = """
-                {
-                     "skuCode": "iphone_15",
-                     "price": 1000,
-                     "quantity": 1
-                }
-                """;
-
-
-        var responseBodyString = RestAssured.given()
-                .contentType("application/json")
-                .body(submitOrderJson)
+    void shouldReadInventory() {
+        var response = RestAssured.given()
                 .when()
-                .post("/api/order")
+                .get("/api/inventory?skuCode=iphone_15&quantity=1")
                 .then()
                 .log().all()
-                .statusCode(201)
-                .extract()
-                .body().asString();
+                .statusCode(200)
+                .extract().response().as(Boolean.class);
+        assertTrue(response);
 
-        assertThat(responseBodyString, Matchers.is("Order Placed Successfully"));
+        var negativeResponse = RestAssured.given()
+                .when()
+                .get("/api/inventory?skuCode=iphone_15&quantity=1000")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract().response().as(Boolean.class);
+        assertFalse(negativeResponse);
+
     }
-
 }
+
