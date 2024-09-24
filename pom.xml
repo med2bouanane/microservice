@@ -43,6 +43,8 @@
 		<flyway-database-postgresql.version>10.18.0</flyway-database-postgresql.version>
 		<postgresql.version>42.7.4</postgresql.version>
 		<tc.postgresql.version>1.20.1</tc.postgresql.version>
+		<spring-webflux.version>6.1.13</spring-webflux.version>
+		<wiremock.version>4.1.4</wiremock.version>
 	</properties>
 
 	<dependencyManagement>
@@ -87,6 +89,16 @@
 				<version>${postgresql.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webflux</artifactId>
+				<version>${spring-webflux.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
+				<version>${wiremock.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

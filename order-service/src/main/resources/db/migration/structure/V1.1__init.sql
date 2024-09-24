@@ -1,4 +1,4 @@
-CREATE TABLE t_orders
+CREATE TABLE IF NOT EXISTS t_orders
 (
     id           BIGSERIAL PRIMARY KEY,
     order_number VARCHAR(255),

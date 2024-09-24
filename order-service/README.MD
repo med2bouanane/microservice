@@ -17,6 +17,9 @@
 psql -U postgres -d test
 \dn; # show schema
 SET schema 'dev'; # use dev schema
+SET search_path TO dev;
+SHOW search_path; # show current schema
+
 \dt # list tables
 ```
 - psql util commands

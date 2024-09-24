@@ -11,13 +11,27 @@ services:
       MONGO_INITDB_DATABASE: product-service
     volumes:
       - ./docker/mongodb/data:/data/db
-  postgres:
+  postgres-orders:
     image: postgres:latest
-    container_name: postgres
+    container_name: postgres-orders
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: order_service
     volumes:
-      - ./docker/pg_data:/var/lib/postgresql/data
+      - ./docker/pg/pg_orders/data:/var/lib/postgresql/data
+      - ./docker/pg/pg_orders/init_orders.sql:/docker-entrypoint-initdb.d/init_orders.sql
+  postgres-inventories:
+    image: postgres:latest
+    container_name: postgres-inventories
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inventory_service
+    volumes:
+      - ./docker/pg/pg_inventories/data:/var/lib/postgresql/data
+      - ./docker/pg/pg_inventories/init_inventories.sql:/docker-entrypoint-initdb.d/init_inventories.sql

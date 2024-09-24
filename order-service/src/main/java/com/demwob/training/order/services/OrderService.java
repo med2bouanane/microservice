@@ -1,5 +1,6 @@
 package com.demwob.training.order.services;
 
+import com.demwob.training.order.client.InventoryClient;
 import com.demwob.training.order.dto.OrderRequest;
 import com.demwob.training.order.models.Order;
 import com.demwob.training.order.repository.OrderRepository;
@@ -15,10 +16,16 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final InventoryClient inventoryClient;
 
     public void placeOrder(OrderRequest orderRequest) {
-        var order = mapToOrder(orderRequest);
-        orderRepository.save(order);
+        boolean isInStock = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
+        if(isInStock) {
+            var order = mapToOrder(orderRequest);
+            orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Product with Skucode " + orderRequest.skuCode() + " is not in stock");
+        }
     }
 
     private static Order mapToOrder(OrderRequest orderRequest) {

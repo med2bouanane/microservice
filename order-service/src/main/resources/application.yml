@@ -4,8 +4,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/order_service?currentSchema=dev
-    username: root
-    password: root
+    username: postgres
+    password: postgres
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
@@ -27,7 +27,16 @@ spring:
       - classpath:db/migration/structure
       - classpath:db/migration/data
     validate-on-migrate: true
+    schemas:
+      - dev
     default-schema: dev
 
 server:
   port: 8081
+
+inventory-client:
+  url: http://localhost:8082
+  scheme: http
+  host: localhost
+  port: 8082
+  path: /api/inventory

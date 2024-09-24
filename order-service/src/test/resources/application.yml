@@ -1,0 +1,7 @@
+
+inventory-client:
+  url: http://localhost:${wiremock.server.port}
+  scheme: http
+  host: localhost
+  port: ${wiremock.server.port}
+  path: /api/inventory
