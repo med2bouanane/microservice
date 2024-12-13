@@ -26,6 +26,11 @@ select version(); # show postgreSQL version
 \c my_database # switch database
 \d t_inventories; # describe table
 \d flyway_schema_history;
+# List schemas
+SELECT schema_name FROM information_schema.schemata;
+# show current schema
+SELECT CURRENT_SCHEMA, CURRENT_SCHEMA();
+
 ```
 - Verify Flyway data for initial scripts (t_inventories table)
   - [V1__init.sql](main%2Fresources%2Fdb%2Fmigration%2Fstructure%2FV1__init.sql)

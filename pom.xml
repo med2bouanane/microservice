@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.3</version>
+		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.demwob.training</groupId>
@@ -32,6 +32,8 @@
 		<module>product-service</module>
 		<module>order-service</module>
 		<module>inventory-service</module>
+		<module>api-gateway</module>
+		<module>idp-keycloak-service</module>
 	</modules>
 
 	<properties>
@@ -45,6 +47,8 @@
 		<tc.postgresql.version>1.20.1</tc.postgresql.version>
 		<spring-webflux.version>6.1.13</spring-webflux.version>
 		<wiremock.version>4.1.4</wiremock.version>
+		<gateway.version>4.2.0</gateway.version>
+		<apache.commons-compress.version>1.27.1</apache.commons-compress.version>
 	</properties>
 
 	<dependencyManagement>
@@ -99,12 +103,31 @@
 				<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
 				<version>${wiremock.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-gateway-mvc</artifactId>
+				<version>${gateway.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>${apache.commons-compress.version}</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -130,7 +153,7 @@
 <!--						<groupId>org.springframework.boot</groupId>-->
 <!--						<artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--						<configuration>-->
-<!--							<mainClass>com.demwob.training.microservices.product.ProductServiceApplication</mainClass>-->
+<!--							<mainClass>com.demwob.training.microservice.product.ProductServiceApplication</mainClass>-->
 <!--							<excludes>-->
 <!--								<exclude>-->
 <!--									<groupId>org.projectlombok</groupId>-->

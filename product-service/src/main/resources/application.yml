@@ -2,3 +2,11 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:password@localhost:27017/product-service?authSource=admin # TODO: split configuration
+  config:
+    import: "classpath:application.yml"
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8180/realms/training-microservices-realm
+#          jwk-set-uri: http://localhost:8180/realms/training-microservices-realm/protocol/openid-connect/certs

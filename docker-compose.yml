@@ -1,4 +1,3 @@
-version: '3'
 services:
   mongo:
     image: mongo:latest
@@ -10,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: product-service
     volumes:
-      - ./docker/mongodb/data:/data/db
+      - mongo-data:/data/db
   postgres-orders:
     image: postgres:latest
     container_name: postgres-orders
@@ -21,7 +20,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: order_service
     volumes:
-      - ./docker/pg/pg_orders/data:/var/lib/postgresql/data
+      - pg-orders:/var/lib/postgresql/data
       - ./docker/pg/pg_orders/init_orders.sql:/docker-entrypoint-initdb.d/init_orders.sql
   postgres-inventories:
     image: postgres:latest
@@ -33,5 +32,53 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: inventory_service
     volumes:
-      - ./docker/pg/pg_inventories/data:/var/lib/postgresql/data
+      - pg-inventories:/var/lib/postgresql/data
       - ./docker/pg/pg_inventories/init_inventories.sql:/docker-entrypoint-initdb.d/init_inventories.sql
+  keycloak-postgres:
+    container_name: keycloak-postgres
+    image: postgres:latest
+    volumes:
+      - pg-keycloak:/var/lib/postgresql/data
+#      - ./docker/pg/pg_postgres_keycloak/init_keycloak.sql:/docker-entrypoint-initdb.d/init_inventories.sql
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    command: [ "start-dev", "--import-realm" ]
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8180
+      KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HEALTH_ENABLED: "true"
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-postgres:5432/${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8180:8080"
+    volumes:
+      - keycloak-realms:/opt/keycloak/data/import/
+    depends_on:
+      - keycloak-postgres
+
+volumes:
+  mongo-data:
+  pg-inventories:
+  pg-orders:
+  pg-keycloak:
+  keycloak-realms:
+#    driver: local
+#    driver_opts:
+#      type: "none"
+#      o: "bind"
+#      device: "./docker/mongodb/data"
+

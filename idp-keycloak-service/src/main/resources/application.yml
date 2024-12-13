@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: idp-keycloak-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/training-microservices-realm
+          jwk-set-uri: http://localhost:8180/realms/training-microservices-realm/protocol/openid-connect/certs
+
+server:
+  port: 8380
